@@ -1,0 +1,66 @@
+/* .App {
+  text-align: center;
+}*/
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.typeahead {
+  width: 156px;
+}
+
+.typeahead__input { 
+  outline: none;
+  font-size: 14px;
+}
+.typeahead__input, .typeahead__list-item {
+  border: #ccc 1px solid;
+  padding: 6px 12px;
+  width: 130px;
+}
+
+.typeahead--selected {
+  border: green 1px solid;
+}
+
+.typeahead__list {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 156px;
+  display: flex;
+  flex-direction: column;
+}
+
+.typeahead__list-item {
+  text-align: left;
+  list-style: none;
+  border-top: none;
+  background-color: #fff;
+}
+
+.typeahead__list-item--active {
+  background-color: #eee;
+}
