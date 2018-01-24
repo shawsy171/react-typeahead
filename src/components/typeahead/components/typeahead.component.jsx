@@ -5,9 +5,13 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
 // components
-import TypeaheadList from './typeahead-list.component'
+import TypeaheadList from './typeahead-list.component';
 
 // rxjs
+import { Subject } from 'rxjs/Subject'
+import 'rxjs/add/operator/takeUntil';
+
+// services
 import country$, { activeItem$ } from './../typeahead-message.service';
 
 // data
@@ -18,7 +22,7 @@ import COUNTRIES from './../../../data/countries';
 import validateInput, { filterCountries } from './../typeahead.helpers';
 
 // contants
-import COUNTRY_REGEX from './../typeahead.contants'
+import COUNTRY_REGEX from './../typeahead.contants';
 const INITIAL_STATE = {
   search: '',
   selected: false,
@@ -30,6 +34,8 @@ const INITIAL_STATE = {
 export class TypeaheadInput extends Component {
   constructor (props) {
     super(props);
+
+    this.destory$ = new Subject();
     
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -43,7 +49,9 @@ export class TypeaheadInput extends Component {
     document.addEventListener('click', this.handleClickOutside.bind(this), true);
 
     // update state when country item selected
-    country$.subscribe((input) => {
+    country$
+      .takeUntil(this.destory$)
+      .subscribe((input) => {
       this.setState(() => ({
         search: input,
         selected: true,
@@ -53,7 +61,9 @@ export class TypeaheadInput extends Component {
     });
     
     // update when active item changes 
-    activeItem$.subscribe((item) => {
+    activeItem$
+      .takeUntil(this.destory$)
+      .subscribe((item) => {
       this.setState(() => ({ 
         activeItem: item,
       }));
@@ -137,7 +147,8 @@ export class TypeaheadInput extends Component {
   }
 
   componentWillUnmount () {
-    country$.unsubscribe();
+    this.destory$.next(true);
+    this.destory$.complete();
     document.removeEventListener('click', this.handleClickOutside.bind(this), true);
   }
 

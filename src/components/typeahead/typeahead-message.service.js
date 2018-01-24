@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
 export const country$ = new Subject();
 export const activeItem$ = new Subject();
