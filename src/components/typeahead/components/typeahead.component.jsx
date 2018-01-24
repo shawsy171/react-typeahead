@@ -115,10 +115,8 @@ export class TypeaheadInput extends Component {
     }
   }
 
-  handleFocus () {
-    this.setState(() => ({
-      showList: true,
-    }))
+  handleFocus (e) {
+    this.handleChange(e)
   }
 
   // remove list when click event is outside the component
@@ -134,6 +132,7 @@ export class TypeaheadInput extends Component {
 
   // render class names for border change
   classNames () {
+    console.log();
     return 'typeahead__input ' + (this.state.selected ? 'typeahead--selected' : '');
   }
 
@@ -158,7 +157,7 @@ export class TypeaheadInput extends Component {
           placeholder="search..."
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          onFocus={this.handleFocus}
+          onFocus={this.handleChange}
           value={search}
           className={this.classNames()}
         />
