@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { TypeaheadInput } from './components/typeahead/components/typeahead.component';
+import { Typeahead } from './components/typeahead/components/typeahead.component';
 
 class App extends Component {
   render() {
@@ -12,7 +12,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to Byhiras Typeahead Component</h1>
         </header>
         <br/>
-        <TypeaheadInput />
+        <Typeahead />
       </div>
     );
   }

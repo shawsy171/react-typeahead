@@ -12,7 +12,7 @@ import { Subject } from 'rxjs/Subject'
 import 'rxjs/add/operator/takeUntil';
 
 // services
-import country$, { activeItem$ } from './../typeahead-message.service';
+import country$, { activeItem$, checkKeyInput } from './../typeahead-message.service';
 
 // data
 import COUNTRIES from './../../../data/countries';
@@ -23,7 +23,7 @@ import validateInput, { filterCountries } from './../typeahead.helpers';
 
 // contants
 import COUNTRY_REGEX from './../typeahead.contants';
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   search: '',
   selected: false,
   activeItem: -1,
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   showList: false,
 };
 
-export class TypeaheadInput extends Component {
+export class Typeahead extends Component {
   constructor (props) {
     super(props);
 
@@ -87,42 +87,7 @@ export class TypeaheadInput extends Component {
 
   // navigate with arrow keys and update selected country
   handleKeyDown (e) {
-    const { 
-      activeItem, 
-      countries,
-      showList
-    } = this.state;
-
-    switch (e.key) {
-      case 'ArrowUp':
-        if (activeItem >= 1) {
-          this.setState((prevState) => ({
-            activeItem: prevState.activeItem - 1,
-          }));
-        }
-        break;
-
-      case 'ArrowDown':
-        if (activeItem <=countries.length - 2) {
-          this.setState((prevState) => ({
-            activeItem: prevState.activeItem + 1,
-          }));
-        }
-        break;
-
-      case 'Enter':
-      if (showList && activeItem > -1) {
-        this.setState(() => ({
-          search: countries[activeItem],
-          selected: true,
-          activeItem: -1,
-          showList: false,
-        }));
-      }
-        break;
-      default:
-        return;
-    }
+    this.setState(checkKeyInput(e.key, this.state));
   }
 
   handleFocus (e) {
@@ -142,13 +107,14 @@ export class TypeaheadInput extends Component {
 
   // render class names for border change
   classNames () {
-    console.log();
     return 'typeahead__input ' + (this.state.selected ? 'typeahead--selected' : '');
   }
 
   componentWillUnmount () {
-    this.destory$.next(true);
+    // kill the all streams 
+    this.destory$.next();
     this.destory$.complete();
+
     document.removeEventListener('click', this.handleClickOutside.bind(this), true);
   }
 
@@ -183,7 +149,7 @@ export class TypeaheadInput extends Component {
   };
 };
 
-TypeaheadInput.propTypes = {
+Typeahead.propTypes = {
   search: PropTypes.string,
   selected: PropTypes.bool.isRequired,
   activeItem: PropTypes.number.isRequired,
@@ -191,4 +157,6 @@ TypeaheadInput.propTypes = {
   showList: PropTypes.bool.isRequired
 }
 
-TypeaheadInput.defaultProps = INITIAL_STATE;
+Typeahead.defaultProps = INITIAL_STATE;
+
+export default Typeahead;
